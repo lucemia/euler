@@ -22,60 +22,41 @@ grid = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 MUL = lambda v: reduce(lambda i,j: i*j, v, 1)
 
 def find(s, n):
-    current = MUL(map(int, s[:n]))
-    big = current
-    for i in xrange(1, len(s)-n+1):
-        current = current / int(s[i-1]) * int(s[i+n-1])
-        # print current, s[i:i+n]
+    big = 0
+    best = None
+    for i in xrange(0, n):
+        ns = s[i:i+n]
+        if len(ns) < n: break
+
+        current = MUL(map(int, ns))
         if current > big:
             big = current
-            # print s[i:i+n], current
+            best = ns
 
-    return big
+    return big, best
 
-grids = map(int, grid.replace('\n', ' ').split(' '))
-idx = lambda i, j: grids[j*20+i] if 0 <= i < 20 and 0 <= j < 20 else 0
+assert find(["26", "63", "78", "14", "15"], 4)[0] == 1788696
 
-def split0(s):
-    current = []
-    for i in s:
-        if i == 0:
-            if current:
-                yield current
-            current = []
-        else:
-            current.append(i)
-    if current:
-        yield current
+grids = [map(int, k.split(' ')) for k in grid.split('\n')]
 
-from itertools import chain
+def test(ns):
+    # print list(ns)
+    try:
+        return MUL(ns)
+    except:
+        return None
+
 def sol(n):
-    # left right
-    def v():
-        for i in range(20):
-            yield grids[i*20:i*21]
-
-    def h():
-        for i in range(20):
-            yield grids[i:400:20]
-
-    def d1():
-        for i in range(-20, 20):
-            yield [idx(i+k, k) for k in range(20)]
-
-    def d2():
-        for i in range(-20, 20):
-            yield [idx(i+k, k) for k in range(20)]
-
     big = 0
-    for s in chain(v(), h(), d1(), d2()):
-        # print s
-        for ss in split0(s):
-            # print ss
-            current = find(ss, n)
-            # print ss, current
-            if current > big:
-                big = current
+
+    for i in xrange(20):
+        for j in xrange(20):
+            a = test(grids[i][j+k] for k in xrange(n))
+            b = test(grids[i+k][j] for k in xrange(n))
+            c = test(grids[i+k][j+k] for k in xrange(n))
+            d = test(grids[i+k][j-k] for k in xrange(n))
+
+            big = max([a, b, c, d, big])
 
     return big
 

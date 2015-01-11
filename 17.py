@@ -1,32 +1,14 @@
+from num2words import num2words
 
-m = {
-    1: 3,
-    2: 3,
-    3: 5,
-    4: 4
-    5: 4,
-    6: 3,
-    7: 5,
-    8: 5,
-    9: 4,
-    10: 3,
-    11: 6,
-    12: 6,
-    13: 8,
-    14: 8,
-    15: 7,
-    16: 7,
-    17: 9,
-    18: 8,
-    19: 8,
-    20: 6,
-    30: 6,
-    40: 6,
-    50: 5,
-    60: 5,
-    70: 7,
-    80: 6,
-    90: 6,
-    100: 7,
-    1000: 8
-}
+
+def exam(n):
+    return len(num2words(n).replace('-', '').replace(' ',''))
+
+assert exam(342) == 23
+assert exam(115) == 20
+
+total = 0
+for i in xrange(1, 1001):
+    total += exam(i)
+
+print total
