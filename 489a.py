@@ -38,27 +38,27 @@ def test(f0, f1, va, vb):
         X = cycle.p
     else:
         X = cycle
+
+    Y = X
     X *= va
 
-    # print cycle, va, vb, cycle
     v = []
-    for i in xrange(X):
-    #     x = (i+va)**3 + vb
-    #     y = i**3 + vb
-    #     if x % cycle == 0 and y % cycle == 0:
-    #         return i
+    i = 0
 
-    # raise
-        g = fast_gcd((i+va)**3+vb, i**3+vb)
-        g = gcd(f0.subs(a, va).subs(b, vb).subs(n, i), f1.subs(a, va).subs(b, vb).subs(n, i))
-        v.append(g)
+    while True:
+        if i > X: break
+        x = (i+va)**3 + vb
+        y = i**3 + vb
 
-    BIG = max(v)
-    print va, vb, BIG, cycle, X
-    factors = [k for k, x in enumerate(v) if x == BIG]
-    # # print va, vb, factors[0], cycle
-    return factors[0]
-    # print BIG, min(factors), factors[1] - factors[0], factors
+        if x % Y == 0 and y % Y == 0:
+            v.append([i, gcd(x,y)])
+            i += X
+        else:
+            i += 1
+
+    print v
+    v.sort(key=lambda i: (-i[1], i[0]))
+    return v[0][0]
 
 def sol(a, b):
     total = 0
