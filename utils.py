@@ -6,13 +6,14 @@ MAX_SIZE = 2000000
 def prime_factors(n):
     i = 2
     fs = []
-    while i < n**.5:
+    while i <= n**.5:
         f = i
         c = 0
         while n % i == 0:
             c += 1
             n /= i
-        fs.append((i, c))
+        if c > 0:
+            fs.append((i, c))
         i += 1
 
     if n > 1:
