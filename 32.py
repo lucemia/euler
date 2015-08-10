@@ -8,11 +8,12 @@ def find(na, nb):
         for b in nx(nb):
             c = a*b
             k = str(a) + str(b) + str(c)
+            if '0' in k: continue
             if len(k) == 9 and len(set(k)) == 9:
                 yield c
 
-
-assert 7254 in  set(find(2, 3))
+# print sum(find(2,3 ))
+assert 7254 in set(find(2, 3))
 
 # for i in range(1, 5):
 #     for j in range(i, 5):
